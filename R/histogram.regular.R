@@ -1,4 +1,4 @@
-`histogram.regular` <- function( y, penalty="br", breaks=NULL, control=list(), right=TRUE, verbose=TRUE, plot=TRUE ) {
+`histogram.regular` <- function( y, penalty="br", breaks=NULL, control=list(), right=TRUE, verbose=TRUE, plot=TRUE, yvarname="y" ) {
 
   # check penalty-parameter 
   penalty = tolower( penalty )
@@ -18,7 +18,7 @@
   n <- length(y)
 
   # control defaults 
-  cont2 <- list( cvformula=1, p=1, g1=1, g2=1, g3=-1, mincount=0 )
+  cont2 <- list( cvformula=1, p=1, g1=1, g2=1, g3=-1, mincount=0, maxbin=1000 )
   if (penalty=="aic")
     cont2 <- list( cvformula=1, p=1, alpha=1, g1=1, g2=1, g3=-1 )
   if (penalty=="bic")
@@ -41,6 +41,10 @@
     Dmax<-floor(breaks)
   else  
     Dmax <- floor(cont2$g1*n^cont2$g2*log(n)^cont2$g3)
+
+  # limit number of bins to maxbin
+  Dmax = min( Dmax, cont2$maxbin ) 
+
   likelihood <- rep(0,Dmax)
   if ( verbose ) 
     message(paste("Building regular histogram with maximum number of bins ",Dmax,".",sep=""))
@@ -116,7 +120,7 @@
   if ( is.ml==TRUE ) {
 	if (verbose) message("- Choosing number of bins via maximum likelihood with ",toupper(penalty)," penalty.",sep="") 
    for ( D in 1:Dmax ) {
-      reghist <- hist( y, breaks=(y[1] + ((0:(D))/(D))*(y[n]-y[1])), right=right, plot=FALSE )   
+      reghist <- hist( y, breaks=(y[1] + ((0:(D))/(D))*(y[n]-y[1])), right=right, plot=FALSE )
 #      reghist <- hist( y, breaks=seq(y[1],y[n], length.out=(D+1)), right=right, plot=FALSE )
       like <- rep( 0,D )
       like2 <- log( reghist$density )
@@ -172,14 +176,20 @@
 
 
   }
+  
 
   # create histogram
 
 	if (verbose) message(paste("- Number of bins chosen: ",Dopt,".\n\n",sep=""))
   H <- hist( y, breaks=(y[1] + ((0:(Dopt))/(Dopt))*(y[n]-y[1])), right=right, plot=FALSE )
 #  H <- hist( y, breaks=seq(y[1], y[n], length.out=(Dopt+1)), right=right, plot=FALSE )
+
+  # Bugfix: Name of y-var gets lost above - reset it.
+  H$xname = yvarname
+
+
   if ( plot )
-    plot( H, freq=FALSE )
+    plot( H, freq=FALSE ) 
 
   return(list(H=H,lhvalue=lhvalue) )
 }

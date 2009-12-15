@@ -1,4 +1,4 @@
-`histogram.irregular` <- function( y, grid="data", breaks=NULL, penalty="penB", greedy=TRUE, right=TRUE, control=list(), verbose=TRUE, plot=TRUE ) {
+`histogram.irregular` <- function( y, grid="data", breaks=NULL, penalty="penB", greedy=TRUE, right=TRUE, control=list(), verbose=TRUE, plot=TRUE, yvarname="y" ) {
 
   epsilon <- 1e-7
 
@@ -40,6 +40,10 @@
     cont2 <- list( g1=1, g2=1, cvformula=1, p=1 )
 
   cont2$quanttype=7
+  
+  cont2$maxbin=1000
+  if ( greedy == TRUE )
+    cont2$maxbin=Inf
 
 	if (grid=="data") 
 	  cont2$g3=Inf
@@ -68,6 +72,7 @@
     G <- floor( breaks )
   else
     G <- cont2$g1*n^cont2$g2*log(n)^cont2$g3
+
 
   # check controls
   # alpha
@@ -289,8 +294,7 @@
     tmp <- DynamicExtreme(weightfunction,n=length(BL)-1,D=D,mini=TRUE,msg=verbose)
     D0 <- which.min(tmp$extreme)
   }
-
-  
+    
   if (verbose) message(paste("- Number of bins chosen: ",D0,".\n\n",sep=""))
   bounds <- DynamicList(tmp$ancestor,BL,D0)
 
@@ -299,6 +303,11 @@
   
   # create histogram
   H <- hist(y,breaks=a+(b-a)*bounds,right=right,plot=FALSE)
+  
+  # Bugfix: Name of y-var gets lost above - reset it.
+  H$xname = yvarname
+
+  # Plot
   if (plot)
     plot( H, freq=FALSE )
 

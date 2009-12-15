@@ -29,7 +29,8 @@ verbose = TRUE, plot = TRUE)
   the finest grid in an irregular histogram when \code{grid} is set to \code{"regular"} or \code{"quantiles"}. 
   Usually not needed since the maximum bin number and the size of the finest grid are calculated by a formula depending 
   on the sample size \code{n}; the defaults for this can be changed using the parameters \code{g1}, 
-  \code{g2} and \code{g3} in the \code{control} argument.}
+  \code{g2} and \code{g3} in the \code{control} argument. Also see \code{maxbin} in the control argument which gives an absolute upper bound 
+  bound on the number of bins if \code{type="regular"}.}
   \item{penalty}{controls which penalty is used. See description of penalties below.}
   \item{greedy}{logical; if \code{TRUE} and \code{type="irregular"}, a subgrid of the finest grid 
   is constructed by a greedy step to make the search procedure feasible. Has no effect for regular histograms.}
@@ -65,7 +66,8 @@ and the bin boundaries can be chosen using the \code{penalty} option.
 To reduce calculation time for irregular histograms, a subset of the breakpoints of the finest grid can be chosen by starting 
 from a one-bin histogram and then subsequently finding the split of an existing bin that leads to the largest increase in the 
 loglikelihood. The full optimization is then performed only over all partitions with endpoints from the subset
-thus constructed. This is achieved by setting \code{greedy=TRUE}.  
+thus constructed. This is achieved by setting \code{greedy=TRUE}.  To reduce calculation time for regular histograms, the \code{maxbin}
+parameter in the \code{control} argument gives an upper bound for the number of bins. The default value is 1000. 
 
 Using \code{type="combined"} (the default value), both a regular and an irregular histogram are constructed using a penalized likelihood approach
 and the one with the larger penalized likelihood is chosen. In this case, the regular histogram is always constructed using the \code{br} penalty. 
@@ -144,7 +146,7 @@ Coefficient of the data-driven part in the \code{penR} penalty. }
 \item{\code{c}}{Controls the weight of the penalty component that corrects for the multiplicity 
 of partitions with the same number of bins in irregular histograms; only used in penalties \code{penA}, \code{penB} and
 \code{penR}.}
-\item{\code{cvformula}}{determines the type of crossvalidation to be performed. Can take the values 1,2 and 3. 1 and 2 correspond 
+\item{\code{cvformula}}{determines the type of crossvalidation to be performed. Can take the values 1, 2 and 3. 1 and 2 correspond 
 to different versions of L2 crossvalidation, while \code{cvformula=3} performs Kullback-Leibler crossvalidation, which is at the moment 
 only available for regular histograms. Note that \code{cvformula=3} automatically forces every bin to include at least 2 observations. 
 If \code{p} is set to a value greater than 1, \code{cvformula=2} is used automatically.}
@@ -154,18 +156,23 @@ of bins allowed in a regular histogram is given by \code{floor(G(n))}, the fines
 obtained by dividing the sample range into \code{floor(G(n))} equisized bins, and if \code{grid="quantiles"}, the finest grid is 
 obtained by dividing the interval \eqn{[0,1]} into equisized intervals and using the sample quantiles corresponding to the boundary points.
 For an irregular histogram with \code{grid="data"}, a mimimum allowed bin size of \eqn{1/G(n)} is enforced. This can be disabled by
-setting \code{g3} to \code{Inf}, causing \eqn{1/G(n)} to be zero. Default settings are \code{g1=1}, \code{g2=1} and \code{g3=-1}.}
+setting \code{g3} to \code{Inf}, causing \eqn{1/G(n)} to be zero. Default settings are \code{g1=1} and \code{g2=1} for all grids. 
+Default values for \code{g3} are \code{-1} for \code{grid="regular"} and \code{grid="quantiles"} and \code{Inf} 
+for \code{grid="data"}. Also see \code{maxbin}.}
 \item{\code{g2}}{see \code{g1}. }
 \item{\code{g3}}{see \code{g1}. }
 \item{\code{k}}{Tuning parameter that only has an effect if \code{penalty="penA"}. Default value is 2. }
+\item{\code{maxbin}}{Gives an absolute upper bound on the number of bins in order to keep the calculations feasible for large data sets. 
+If the number of bins chosen via \code{breaks} or \code{g1}, \code{g2} and \code{g3} exceeds \code{maxbin}, \code{maxbin} in used as 
+the maximum number of bins. Only has an effect for regular histograms. Defaults to 1000.}
+\item{\code{p}}{Controls the number p of data points left out in the crossvalidation. Can take integer values between \code{1} 
+(default) and \code{n-1}. If a value greater than 1 is chosen, \code{cvformula} is automatically set to 2 since crossvalidation 
+formula 1 does not depend on p and Kullback-Leibler crossvalidation is only supported for \code{p=1}.}
 \item{\code{quanttype}}{Determines the way the quantiles are calculated if \code{grid="quantiles"}. Corresponds to the \code{type}
 argument in \code{\link{quantile}}, whose default \code{7} is also the default here.}
 %\item{\code{mincount}}{integer between 0 and \code{floor(n/2)} that controls the minimum number of observations per bin. 
 %Defaults to \code{0} \code{penalty=="mdl"} or \code{penalty=="cv"} and \code{cvformula==3} in the regular case, where the minimum required
 %number of counts per bin is 1 and 2, respectively.}
-\item{\code{p}}{Controls the number p of data points left out in the crossvalidation. Can take integer values between \code{1} 
-(default) and \code{n-1}. If a value greater than 1 is chosen, \code{cvformula} is automatically set to 2 since crossvalidation 
-formula 1 does not depend on p and Kullback-Leibler crossvalidation is only supported for \code{p=1}.}
 }
 }
 
@@ -181,9 +188,9 @@ automatic histogram constructions. ESAIM: Probability and Statistics, 13, 181-19
 
 Hall, P. and Hannan, E. J. (1988). On stochastic complexity and nonparametric density estimation. Biometrika 75, 705-714.
 
-Rozenholc, Y., Mildenberger, T., Gather, U. (2009): Constructing Irregular Histograms by Penalized Likelihood, 
-Technical Report 04/09, Technische Universität Dortmund.
-\url{http://www.statistik.tu-dortmund.de/fileadmin/user_upload/Lehrstuehle/MSind/SFB_475/2009/tr04-09.pdf}
+Rozenholc, Y, Mildenberger, T. and Gather, U. (2009). Combining regular and irregular histograms by penalized likelihood. 
+Discussion Paper 31/2009, SFB 823, TU Dortmund.
+\url{http://www.statistik.tu-dortmund.de/fileadmin/user_upload/SFB_823/discussion_papers/2009/31_09_rozenholc_mildenberger_gather.pdf}
 }
 \author{Thoralf Mildenberger, Yves Rozenholc, David Zasada.}
 %\note{ ~~further notes~~ 
@@ -193,10 +200,28 @@ Technical Report 04/09, Technische Universität Dortmund.
 \seealso{\code{\link{hist}}}
 \examples{
 
-## draw an histogram from a standard normal sample
+## draw a histogram from a standard normal sample
 
 y<-rnorm(100)
 histogram(y)
+
+## draw a histogram from a standard exponential sample
+
+y<-rexp(1500)
+histogram(y)
+
+## draw a histogram from a normal mixture 
+
+n<-sum(sample(c(0,1),1000,replace=TRUE))
+y<-c(rnorm(n,mean=5,sd=0.1),rnorm(1000-n))
+histogram(y)
+
+## the same using a regular histogram with Kullback-Leibler CV 
+
+n<-sum(sample(c(0,1),1000,replace=TRUE))
+y<-c(rnorm(n,mean=5,sd=0.1),rnorm(1000-n))
+histogram(y,type="regular",penalty="cv",control=list(cvformula=3))
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

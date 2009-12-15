@@ -25,11 +25,11 @@
   
   # histogram type: regular
   if ( tolower(type)=="regular" || tolower(type)=="r" )
-     out<-histogram.regular( y, penalty=penalty, breaks=breaks, control=control, right=right, verbose=verbose, plot=plot )$H
+     out<-histogram.regular( y, penalty=penalty, breaks=breaks, control=control, right=right, verbose=verbose, plot=plot, yvarname=deparse( substitute(y)) )$H
 
   # histogram type: irregular
   if ( tolower(type)=="irregular" || tolower(type)=="i" )
-     out<-histogram.irregular( y, grid=grid, breaks=breaks, penalty=penalty, greedy=greedy, control=control, right=right, verbose=verbose, plot=plot )$H
+     out<-histogram.irregular( y, grid=grid, breaks=breaks, penalty=penalty, greedy=greedy, control=control, right=right, verbose=verbose, plot=plot, yvarname=deparse( substitute(y)) )$H
 
   # histogram type: combined
   if ( tolower(type)=="combined" || tolower(type)=="c" ) {
@@ -49,7 +49,6 @@
     out2 <- histogram.irregular( y, grid=grid, breaks=NULL, penalty=penalty, greedy=greedy, control=control, right=right, verbose=verbose, plot=FALSE )
 
     #compare maximized likelihood or frgular and irregular histogram
-
     if (out1$lhvalue>=out2$lhvalue) {
 		  out<-out1$H
 		  if (verbose) 
@@ -60,9 +59,12 @@
 		  if ( verbose ) 
 		    message("\nIrregular histogram chosen.\n")
 	  }
+	         
+    # Bugfix: Name of y-var gets lost above - reset it.
+    out$xname = deparse( substitute(y))
 	  
 	  if ( plot ) 
-	    plot(out)
+	    plot(out, freq=FALSE)
 	}
 
 
