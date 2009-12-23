@@ -18,11 +18,11 @@
   n <- length(y)
 
   # control defaults 
-  cont2 <- list( cvformula=1, p=1, g1=1, g2=1, g3=-1, mincount=0, maxbin=1000 )
+  cont2 <- list( cvformula=1, p=1, g1=1, g2=1, g3=-1, mincount=0, maxbin=1000)
   if (penalty=="aic")
-    cont2 <- list( cvformula=1, p=1, alpha=1, g1=1, g2=1, g3=-1 )
+    cont2 <- list( cvformula=1, p=1, alpha=1, g1=1, g2=1, g3=-1, mincount=0, maxbin=1000)
   if (penalty=="bic")
-    cont2 <- list( cvformula=1, p=1, alpha=0.5, g1=1, g2=1, g3=-1 )
+    cont2 <- list( cvformula=1, p=1, alpha=0.5, g1=1, g2=1, g3=-1, mincount=0, maxbin=1000)
 
   # replace defaults with values set by the user
   cont2[names(control)]<-control
