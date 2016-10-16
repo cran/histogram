@@ -1,0 +1,12 @@
+585b5e846c6e08b01a502d694b755d1b *DESCRIPTION
+2eee5e1ba5f04ca53172f7dc99b8cc67 *NAMESPACE
+ab1e64d23e14a119e78ddabc58d2bc18 *NEWS
+aaa37ba9791531fe0a4f9d035b765cdf *R/DynamicExtreme.R
+5a8c58e38abf7ce910a120a86d91f13f *R/DynamicList.R
+4410f07bbec87addbc63d54c62b5218e *R/PathList.R
+82b767d1bd543f658faf5b9bdd971086 *R/greedy.R
+2a020c19585b2feebdc68681ad46b53b *R/histogram.R
+66b51a4ae95e20b8176947a7a0e1079c *R/histogram.irregular.R
+db6698fc59594df25bd06e4d6456e7a1 *R/histogram.regular.R
+cbb0bfb6be33de3e0fa608f9d0ad49d3 *R/utils.R
+e1aa6fdb961cac16db5d8c7fdc98fd9e *man/histogram.Rd

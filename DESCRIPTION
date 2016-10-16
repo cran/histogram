@@ -1,15 +1,22 @@
 Package: histogram
 Type: Package
-Title: Construction of regular and irregular histograms with different
-        options for automatic choice of bins
-Version: 0.0-23
-Date: 2009-12-23
-Author: Thoralf Mildenberger, Yves Rozenholc, David Zasada.
-Maintainer: Thoralf Mildenberger <mildenbe@statistik.tu-dortmund.de>
-Description: Automatic construction of regular and irregular histograms
-        as described in Rozenholc/Mildenberger/Gather (2009).
+Title: Construction of Regular and Irregular Histograms with Different
+        Options for Automatic Choice of Bins
+Version: 0.0-24
+Date: 2016-10-16
+Authors@R: c(person("Thoralf", "Mildenberger", role = c("aut", "cre"),
+		     email = "mild@zhaw.ch"),
+	      person("Yves", "Rozenholc", role = "aut"),
+	      person("David", "Zasada", role = "aut"))
+Author: Thoralf Mildenberger [aut, cre], 
+ Yves Rozenholc [aut], 
+ David Zasada [aut]
+Maintainer: Thoralf Mildenberger <mild@zhaw.ch>
+Description: Automatic construction of regular and irregular histograms as described in Rozenholc/Mildenberger/Gather (2010).
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2009-12-23 13:24:37 UTC; mildenberger
+ByteCompile: yes
+NeedsCompilation: no
+Packaged: 2016-10-16 11:53:03 UTC; thoralf
 Repository: CRAN
-Date/Publication: 2009-12-24 10:42:12
+Date/Publication: 2016-10-16 17:39:09

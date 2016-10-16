@@ -36,7 +36,7 @@ verbose = TRUE, plot = TRUE)
   is constructed by a greedy step to make the search procedure feasible. Has no effect for regular histograms.}
   \item{right}{logical; if \code{TRUE}, the histograms cells are right-closed (left open) intervals.}
   \item{control}{list of additional control parameters. Meaning and default values depend on settings of \code{type}, 
-  \code{penalty} and \code{grid}. See below.}.
+  \code{penalty} and \code{grid}. See below.}
   \item{verbose}{logical; if \code{TRUE} (default), some information is given during histogram construction and the resulting \code{histogram} 
   object is printed.}
   \item{plot}{logical. If \code{TRUE} (default), the histogram is plotted.}
@@ -191,6 +191,8 @@ Hall, P. and Hannan, E. J. (1988). On stochastic complexity and nonparametric de
 Rozenholc, Y, Mildenberger, T. and Gather, U. (2009). Combining regular and irregular histograms by penalized likelihood. 
 Discussion Paper 31/2009, SFB 823, TU Dortmund.
 \url{http://www.statistik.tu-dortmund.de/fileadmin/user_upload/SFB_823/discussion_papers/2009/31_09_rozenholc_mildenberger_gather.pdf}
+
+Rozenholc, Y., Mildenberger, T., Gather, U. (2010). Combining regular and irregular histograms by penalized likelihood. Computational Statistics and Data Analysis 54, 3313-3323.
 }
 \author{Thoralf Mildenberger, Yves Rozenholc, David Zasada.}
 %\note{ ~~further notes~~ 

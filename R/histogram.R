@@ -1,6 +1,17 @@
 `histogram` <- function( y, type="combined", grid="data", breaks=NULL, penalty="default", greedy=TRUE, right=TRUE, control=list(), verbose=TRUE, plot=TRUE ) {
 
+  # save y name for later (before doing anything to it)
+  
+  xname <- deparse( substitute(y))
+  
   # check data vector
+
+  if ( any(is.na(y)) ) {
+    warning("Removing NAs from data vector")
+    y <- y[!is.na(y)]
+  }
+    
+  
   if ( length(unique(y))<2 )
     stop( "data vector must consist of at least two distinct values!" )
     
@@ -25,11 +36,11 @@
   
   # histogram type: regular
   if ( tolower(type)=="regular" || tolower(type)=="r" )
-     out<-histogram.regular( y, penalty=penalty, breaks=breaks, control=control, right=right, verbose=verbose, plot=plot, yvarname=deparse( substitute(y)) )$H
+     out<-histogram.regular( y, penalty=penalty, breaks=breaks, control=control, right=right, verbose=verbose, plot=plot, yvarname=xname )$H
 
   # histogram type: irregular
   if ( tolower(type)=="irregular" || tolower(type)=="i" )
-     out<-histogram.irregular( y, grid=grid, breaks=breaks, penalty=penalty, greedy=greedy, control=control, right=right, verbose=verbose, plot=plot, yvarname=deparse( substitute(y)) )$H
+     out<-histogram.irregular( y, grid=grid, breaks=breaks, penalty=penalty, greedy=greedy, control=control, right=right, verbose=verbose, plot=plot, yvarname=xname )$H
 
   # histogram type: combined
   if ( tolower(type)=="combined" || tolower(type)=="c" ) {
@@ -61,8 +72,9 @@
 	  }
 	         
     # Bugfix: Name of y-var gets lost above - reset it.
-    out$xname = deparse( substitute(y))
-	  
+
+    out$xname <- xname
+    
 	  if ( plot ) 
 	    plot(out, freq=FALSE)
 	}
