@@ -1,4 +1,6 @@
-`histogram` <- function( y, type="combined", grid="data", breaks=NULL, penalty="default", greedy=TRUE, right=TRUE, control=list(), verbose=TRUE, plot=TRUE ) {
+`histogram` <- function( y, type="combined", grid="data", breaks=NULL, penalty="default", 
+                         greedy=TRUE, right=TRUE, freq=FALSE, control=list(), verbose=TRUE, plot=TRUE,
+                         ...) {
 
   # save y name for later (before doing anything to it)
   
@@ -36,11 +38,11 @@
   
   # histogram type: regular
   if ( tolower(type)=="regular" || tolower(type)=="r" )
-     out<-histogram.regular( y, penalty=penalty, breaks=breaks, control=control, right=right, verbose=verbose, plot=plot, yvarname=xname )$H
+     out<-histogram.regular( y, penalty=penalty, breaks=breaks, control=control, right=right, freq=freq, verbose=verbose, plot=plot, yvarname=xname, ... )$H
 
   # histogram type: irregular
   if ( tolower(type)=="irregular" || tolower(type)=="i" )
-     out<-histogram.irregular( y, grid=grid, breaks=breaks, penalty=penalty, greedy=greedy, control=control, right=right, verbose=verbose, plot=plot, yvarname=xname )$H
+     out<-histogram.irregular( y, grid=grid, breaks=breaks, penalty=penalty, greedy=greedy, control=control, right=right, verbose=verbose, plot=plot, yvarname=xname, ... )$H
 
   # histogram type: combined
   if ( tolower(type)=="combined" || tolower(type)=="c" ) {
@@ -67,6 +69,7 @@
 		}
 		else {
       out<-out2$H
+      freq <- FALSE
 		  if ( verbose ) 
 		    message("\nIrregular histogram chosen.\n")
 	  }
@@ -76,7 +79,7 @@
     out$xname <- xname
     
 	  if ( plot ) 
-	    plot(out, freq=FALSE)
+	    plot(out, freq=freq, ...)
 	}
 
 

@@ -1,3 +1,8 @@
+Version 0.0-25, released 2019/04/27:
+
+* Now allows for passing graphic parameters to hist() via ... argument
+* Updated dead link to technical report
+
 Version 0.0-24, released 2016/10/17:
 
 * NAs are now removed (giving a warning), previously histogram() failed when NAs were present
